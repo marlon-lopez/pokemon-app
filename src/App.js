@@ -1,14 +1,17 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-import Home from './components/Home'
-import './components/sassTest.scss'
+import GlobalStyles from './GlobalStyles'
+
+import PokemonList from './components/PokemonList/PokemonList'
+
 const App = () => {
   return (
     <Router>
-      <h1>Hello body</h1>
-      <Link to='/home'>Home</Link>
+      <GlobalStyles />
       <Switch>
-        <Route path='/home' exact component={Home} />
+        <Route path='/'>
+          <PokemonList color='red' />
+        </Route>
       </Switch>
     </Router>
   )

@@ -2,17 +2,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const path = require('path')
-
+/* 
 let mode = process.env.NODE_ENV !== 'production' ? 'development' : 'production'
-let target = 'browserslist'
+let target = process.env.NODE_ENV === 'production' ? 'browserslist' : 'web' */
+
+let target = 'web'
+let mode = 'development'
+
+if (process.env.NODE_ENV === 'production') {
+  mode = 'production'
+  target = 'browserslist'
+}
 
 module.exports = {
-  mode,
+  mode: mode,
   //this allows the use of react-router-dom
+
+  entry: './src/index.js',
   devServer: {
+    hot: true,
     contentBase: './dist',
     historyApiFallback: true,
-    hot: true,
   },
 
   module: {
