@@ -10,15 +10,19 @@ import {
   InfoTags,
   Type,
 } from './Styles'
-const CardItem = ({ bgColor, cosa }) => {
-  console.log(cosa)
+import colors from '../../data/colors'
+
+const CardItem = ({ image, name, types, id }) => {
   return (
-    <Card bgColor={bgColor}>
-      <Name>Magikarp</Name>
-      <Image src={cosa} alt='d' />
+    <Card bgColor={colors[types[0].type.name].primary}>
+      <Name>{name}</Name>
+      <Image src={image} alt={name} />
       <InfoTags>
-        <Type>Fuego</Type>
-        <Type>Fuego</Type>
+        {types.map((type) => (
+          <Type key={type.type.name} color={colors[type.type.name]}>
+            {type.type.name}
+          </Type>
+        ))}
       </InfoTags>
       <TriangleContainers>
         <RightTriangle
@@ -29,7 +33,7 @@ const CardItem = ({ bgColor, cosa }) => {
           xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M3.53625e-05 -8.00002L0 396.5L251 170L3.53625e-05 -8.00002Z'
-            fill='#60A162'
+            fill={colors[types[0].type.name].secondary}
           />
         </RightTriangle>
         <LeftTriangle
@@ -40,7 +44,7 @@ const CardItem = ({ bgColor, cosa }) => {
           xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M3.53625e-05 -8.00002L0 396.5L251 170L3.53625e-05 -8.00002Z'
-            fill='#60A162'
+            fill={colors[types[0].type.name].secondary}
           />
         </LeftTriangle>
       </TriangleContainers>

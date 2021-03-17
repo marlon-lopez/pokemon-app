@@ -1,10 +1,21 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import api from './middleware/api'
-import reducer from './pokemons'
+import {
+  configureStore,
+  combineReducers,
+  getDefaultMiddleware,
+} from '@reduxjs/toolkit'
 
-export default function store() {
+import pokemons from './pokemons'
+import cachedPokemons from './cachedPokemons'
+
+const rootReducers = combineReducers({
+  pokemons: pokemons,
+  cachedPokemons: cachedPokemons,
+})
+
+const store = () => {
   return configureStore({
-    reducer,
-    middleware: [...getDefaultMiddleware(), api],
+    reducer: rootReducers,
+    middleware: getDefaultMiddleware(),
   })
 }
+export default store

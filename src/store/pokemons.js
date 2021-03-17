@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-import { apiCallBegan } from './actions'
+import { getPokemonsByNameOrId } from './api/api'
+import { formatPokemonId, formatPokemonUrl } from '../utils'
+import axios from 'axios'
 
 const slice = createSlice({
   name: 'pokemons',
@@ -8,31 +9,47 @@ const slice = createSlice({
     listPokemons: [],
     favPokemons: [],
     capturedPokemons: [],
-    loading: false,
+    loading: undefined,
   },
 
   reducers: {
-    pokemonsRequested: (state, action) => {
-      state.loading = true
-    },
-    pokemonsReceived: (state, action) => {
-      state.loading = false
-      state.listPokemons.push(action.payload)
+    pokemonsReceived(state, action) {
+      const { pokemon, index } = action.payload
+      const alreadyExists = state.listPokemons.find(
+        (existingPokemon) => existingPokemon.id === pokemon.id,
+      )
+      if (!alreadyExists) {
+        state.listPokemons.push(pokemon)
+      }
     },
   },
 })
 
-export const { pokemonsRequested, pokemonsReceived } = slice.actions
+export const { pokemonsReceived } = slice.actions
 
-export const loadPokemons = () => (dispatch, getState) => {
-  dispatch(
-    apiCallBegan({
-      url: `/pokemon/ditto`,
-      method: 'GET',
-      onStart: pokemonsRequested,
-      onSuccess: pokemonsReceived,
-    }),
-  )
+export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
+  const size = getState().pokemons.listPokemons.length
+  const results = cachedPokemons.slice(size, size + 6)
+
+  console.log(results)
+
+  for (const [index, { url }] of results.entries()) {
+    const id = Number(url.split('/')[6])
+    const pokemon = await getPokemonsByNameOrId(id)
+    const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
+
+    dispatch(
+      pokemonsReceived({
+        pokemon: {
+          ...pokemon,
+          sprites: {
+            frontDefault: pokemonImageUrl,
+          },
+        },
+        index,
+      }),
+    )
+  }
 }
 
 export default slice.reducer
