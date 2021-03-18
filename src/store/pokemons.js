@@ -22,13 +22,31 @@ const slice = createSlice({
         state.listPokemons.push(pokemon)
       }
     },
+    singlePokemonReceived(state, action) {
+      const { pokemon } = action.payload
+      state.listPokemons.push(pokemon)
+    },
+    resetPokemons(state, action) {
+      state.listPokemons = []
+    },
   },
 })
 
-export const { pokemonsReceived } = slice.actions
+export const {
+  pokemonsReceived,
+  resetPokemons,
+  singlePokemonReceived,
+} = slice.actions
 
 export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
-  const size = getState().pokemons.listPokemons.length
+  let size = getState().pokemons.listPokemons.length
+
+  //if a pokemon is already in the array delete it and set the size to 0
+  if (size > 0 && size < 5) {
+    dispatch(resetPokemons())
+    size--
+  }
+
   const results = cachedPokemons.slice(size, size + 6)
 
   console.log(results)
@@ -50,6 +68,22 @@ export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
       }),
     )
   }
+}
+
+export const getSinglePokemon = (id) => async (dispatch, getState) => {
+  const pokemon = await getPokemonsByNameOrId(id)
+  const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
+
+  dispatch(
+    singlePokemonReceived({
+      pokemon: {
+        ...pokemon,
+        sprites: {
+          frontDefault: pokemonImageUrl,
+        },
+      },
+    }),
+  )
 }
 
 export default slice.reducer
