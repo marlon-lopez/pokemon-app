@@ -6,10 +6,12 @@ import {
 
 import pokemons from './pokemons'
 import cachedPokemons from './cachedPokemons'
+import pokemonSpecies from './pokemonSpecies'
 
 const rootReducers = combineReducers({
   pokemons: pokemons,
   cachedPokemons: cachedPokemons,
+  species: pokemonSpecies,
 })
 
 const store = () => {

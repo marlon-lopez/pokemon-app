@@ -22,3 +22,7 @@ export const getPokemons = async (limit, offset) => {
 export const getPokemonsByNameOrId = (param) => {
   return createRequest(`/pokemon/${param}`, 'GET')
 }
+
+export const getPokemonSpeciesById = (id) => {
+  return createRequest(`/pokemon-species/${id}/`)
+}

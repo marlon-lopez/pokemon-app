@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getPokemonsByNameOrId } from './api/api'
+import { getPokemonsByNameOrId, getPokemonSpecies } from './api/api'
 import { formatPokemonId, formatPokemonUrl } from '../utils'
-import axios from 'axios'
 
 const slice = createSlice({
   name: 'pokemons',
@@ -9,10 +8,13 @@ const slice = createSlice({
     listPokemons: [],
     favPokemons: [],
     capturedPokemons: [],
-    loading: undefined,
+    loading: false,
   },
 
   reducers: {
+    toggleLoading(state, action) {
+      state.loading = !state.loading
+    },
     pokemonsReceived(state, action) {
       const { pokemon, index } = action.payload
       const alreadyExists = state.listPokemons.find(
@@ -25,6 +27,7 @@ const slice = createSlice({
     singlePokemonReceived(state, action) {
       const { pokemon } = action.payload
       state.listPokemons.push(pokemon)
+      state.loading = false
     },
     resetPokemons(state, action) {
       state.listPokemons = []
@@ -33,6 +36,7 @@ const slice = createSlice({
 })
 
 export const {
+  toggleLoading,
   pokemonsReceived,
   resetPokemons,
   singlePokemonReceived,
@@ -46,10 +50,7 @@ export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
     dispatch(resetPokemons())
     size--
   }
-
   const results = cachedPokemons.slice(size, size + 6)
-
-  console.log(results)
 
   for (const [index, { url }] of results.entries()) {
     const id = Number(url.split('/')[6])
@@ -73,6 +74,7 @@ export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
 export const getSinglePokemon = (id) => async (dispatch, getState) => {
   const pokemon = await getPokemonsByNameOrId(id)
   const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
+  dispatch(toggleLoading())
 
   dispatch(
     singlePokemonReceived({
