@@ -29,6 +29,14 @@ const slice = createSlice({
       state.listPokemons.push(pokemon)
       state.loading = false
     },
+    favPokemonAdded(state, action) {
+      state.favPokemons.push(action.payload)
+    },
+    favPokemonRemoved(state, action) {
+      state.favPokemons = state.favPokemons.filter(
+        (pokemon) => pokemon !== action.payload,
+      )
+    },
     resetPokemons(state, action) {
       state.listPokemons = []
     },
@@ -40,6 +48,8 @@ export const {
   pokemonsReceived,
   resetPokemons,
   singlePokemonReceived,
+  favPokemonAdded,
+  favPokemonRemoved,
 } = slice.actions
 
 export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
@@ -87,5 +97,4 @@ export const getSinglePokemon = (id) => async (dispatch, getState) => {
     }),
   )
 }
-
 export default slice.reducer

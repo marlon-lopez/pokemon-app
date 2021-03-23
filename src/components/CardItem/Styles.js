@@ -31,14 +31,23 @@ export const LeftTriangle = styled.svg`
 `
 
 export const Image = styled.img`
+  cursor: pointer;
   width: 170px;
   z-index: 10;
+`
+export const Actions = styled.div`
+  width: 100%;
+  text-align: center;
+  z-index: 12;
+  margin-bottom: 1rem;
 `
 export const Name = styled.h3`
   z-index: 10;
   color: #fff;
   letter-spacing: 2px;
   text-transform: capitalize;
+  display: inline-block;
+  margin-right: 1rem;
 `
 
 export const InfoTags = styled.div`

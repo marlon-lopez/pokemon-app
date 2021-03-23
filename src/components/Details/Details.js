@@ -10,7 +10,7 @@ import {
   Card,
   Biography,
 } from './Style'
-
+import FavBtn from '../FavBtn/FavBtn'
 import colors from '../../data/colors'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSinglePokemon } from '../../store/pokemons'
@@ -19,32 +19,41 @@ import {
   getPokemonEvolutions,
   resetEvolution,
 } from '../../store/pokemonEvolutions'
+import { favPokemonAdded, favPokemonRemoved } from '../../store/pokemons'
+
 import { useHistory, useLocation } from 'react-router-dom'
 
 const Details = ({ match }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   let location = useLocation()
-  const { listPokemons } = useSelector((state) => state.pokemons)
+  const { listPokemons, favPokemons } = useSelector((state) => state.pokemons)
   const { data } = useSelector((state) => state.species)
   const { evolutions } = useSelector((state) => state.evolutions)
   const { id } = match.params
   const selectedPokemon = listPokemons.find(
     (pokemon) => pokemon.id === Number(id),
   )
+
   const evolutionChainId = data.evolution_chain
     ? data.evolution_chain.url.split('/')[6]
     : null
 
+  const favAction = (id) => {
+    console.log('clickedd')
+    if (favPokemons)
+      return !favPokemons.includes(id)
+        ? dispatch(favPokemonAdded(id))
+        : dispatch(favPokemonRemoved(id))
+  }
+
   useEffect(() => {
-    console.log(id)
     if (!selectedPokemon) {
       dispatch(getSinglePokemon(id))
     }
     if (!evolutionChainId) dispatch(getPokemonSpecies(id))
 
     return () => {
-      console.log('dismounted')
       dispatch(resetSpecies())
     }
   }, [location])
@@ -64,6 +73,10 @@ const Details = ({ match }) => {
         <MainContainer
           background={colors[selectedPokemon.types[0].type.name].primary}>
           <InformationWrapper>
+            <FavBtn
+              isFavorite={favPokemons.includes(id)}
+              action={() => favAction(id)}
+            />
             <Name>{selectedPokemon.name}</Name>
             <Biography>
               <Statistics>

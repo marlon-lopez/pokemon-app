@@ -1,22 +1,48 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import FavBtn from '../FavBtn/FavBtn'
 import {
   Card,
   TriangleContainers,
   RightTriangle,
   LeftTriangle,
   Image,
-  TextWrapper,
+  Actions,
   Name,
   InfoTags,
   Type,
 } from './Styles'
 import colors from '../../data/colors'
+import { favPokemonAdded, favPokemonRemoved } from '../../store/pokemons'
 
 const CardItem = ({ image, name, types, id }) => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { favPokemons } = useSelector((state) => state.pokemons)
+
+  const favAction = (id) => {
+    console.log('clickedd')
+    if (favPokemons)
+      return !favPokemons.includes(id)
+        ? dispatch(favPokemonAdded(id))
+        : dispatch(favPokemonRemoved(id))
+  }
+
   return (
     <Card bgColor={colors[types[0].type.name].primary}>
-      <Name>{name}</Name>
-      <Image src={image} alt={name} />
+      <Actions>
+        <Name>{name}</Name>
+        <FavBtn
+          isFavorite={favPokemons.includes(id)}
+          action={() => favAction(id)}
+        />
+      </Actions>
+      <Image
+        src={image}
+        alt={name}
+        onClick={() => history.push(`/pokemons/${id}`)}
+      />
       <InfoTags>
         {types.map((type) => (
           <Type key={type.type.name} color={colors[type.type.name]}>

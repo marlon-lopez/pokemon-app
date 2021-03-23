@@ -18,26 +18,34 @@ export const MainContainer = styled.div`
 export const InformationWrapper = styled.div`
   flex: 1;
   padding-left: 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: 1200px) {
     padding: 0;
+    align-items: center;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 1rem 0.5rem;
   }
 `
 export const Name = styled.h2`
   font-size: 4.5rem;
   margin-bottom: 3rem;
-
+  text-transform: capitalize;
   @media screen and (max-width: 1200px) {
     font-size: 4rem;
   }
   @media screen and (max-width: 940px) {
     text-align: center;
     margin-top: 2rem;
+    font-size: 2.3rem;
   }
 `
 export const Biography = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 1rem;
+  column-gap: 2rem;
   @media screen and (max-width: 940px) {
     justify-items: center;
   }
@@ -88,6 +96,11 @@ export const ImageWrapper = styled.div`
       width: 400px;
     }
   }
+  @media screen and (max-width: 500px) {
+    img {
+      width: 100%;
+    }
+  }
 `
 
 export const Evolutions = styled.div`
@@ -110,7 +123,7 @@ export const Card = styled.div`
   }
   @media screen and (max-width: 1200px) {
     img {
-      width: 125px;
+      width: 100px;
     }
   }
 `
