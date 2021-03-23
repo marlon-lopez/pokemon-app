@@ -12,10 +12,13 @@ const slice = createSlice({
     pokemonSpeciesReceived(state, action) {
       state.data = action.payload
     },
+    resetSpecies(state, action) {
+      state.data = []
+    },
   },
 })
 
-export const { pokemonSpeciesReceived } = slice.actions
+export const { pokemonSpeciesReceived, resetSpecies } = slice.actions
 
 export const getPokemonSpecies = (id) => async (dispatch, getState) => {
   const data = await getPokemonSpeciesById(id)
