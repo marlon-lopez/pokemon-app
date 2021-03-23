@@ -11,6 +11,7 @@ import {
   Biography,
 } from './Style'
 
+import colors from '../../data/colors'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSinglePokemon } from '../../store/pokemons'
 import { getPokemonSpecies, resetSpecies } from '../../store/pokemonSpecies'
@@ -18,9 +19,12 @@ import {
   getPokemonEvolutions,
   resetEvolution,
 } from '../../store/pokemonEvolutions'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const Details = ({ match }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
+  let location = useLocation()
   const { listPokemons } = useSelector((state) => state.pokemons)
   const { data } = useSelector((state) => state.species)
   const { evolutions } = useSelector((state) => state.evolutions)
@@ -33,16 +37,17 @@ const Details = ({ match }) => {
     : null
 
   useEffect(() => {
-    if (!evolutionChainId) dispatch(getPokemonSpecies(id))
-
+    console.log(id)
     if (!selectedPokemon) {
       dispatch(getSinglePokemon(id))
     }
+    if (!evolutionChainId) dispatch(getPokemonSpecies(id))
 
     return () => {
+      console.log('dismounted')
       dispatch(resetSpecies())
     }
-  }, [])
+  }, [location])
 
   useEffect(() => {
     if (evolutionChainId) {
@@ -51,12 +56,13 @@ const Details = ({ match }) => {
     return () => {
       dispatch(resetEvolution())
     }
-  }, [evolutionChainId])
+  }, [evolutionChainId, location])
 
   return (
     <>
       {selectedPokemon && evolutions ? (
-        <MainContainer background='#912c36'>
+        <MainContainer
+          background={colors[selectedPokemon.types[0].type.name].primary}>
           <InformationWrapper>
             <Name>{selectedPokemon.name}</Name>
             <Biography>
@@ -86,7 +92,12 @@ const Details = ({ match }) => {
             <img src={selectedPokemon.sprites.frontDefault} alt='' />
             <Evolutions>
               {evolutions.map((pokemon) => (
-                <Card key={pokemon.name}>
+                <Card
+                  key={pokemon.name}
+                  background={
+                    colors[selectedPokemon.types[0].type.name].secondary
+                  }
+                  onClick={() => history.push(`/pokemons/${pokemon.id}`)}>
                   <img src={pokemon.img} alt={pokemon.name} />
                   <p>{pokemon.name}</p>
                 </Card>

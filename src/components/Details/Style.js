@@ -31,6 +31,7 @@ export const Name = styled.h2`
   }
   @media screen and (max-width: 940px) {
     text-align: center;
+    margin-top: 2rem;
   }
 `
 export const Biography = styled.div`
@@ -80,7 +81,7 @@ export const ImageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   img {
-    width: 600px;
+    width: 500px;
   }
   @media screen and (max-width: 1200px) {
     img {
@@ -91,11 +92,17 @@ export const ImageWrapper = styled.div`
 
 export const Evolutions = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `
 export const Card = styled.div`
-  margin: 0 2rem;
+  cursor: pointer;
+  margin: 1rem 2rem;
+  background: ${({ background }) => background};
+  padding: 1rem;
+  border-radius: 15px;
   img {
-    width: 200px;
+    width: 150px;
   }
   p {
     text-align: center;
