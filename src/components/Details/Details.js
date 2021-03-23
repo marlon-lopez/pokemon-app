@@ -1,53 +1,78 @@
 import React, { useEffect } from 'react'
 import {
   MainContainer,
-  Triangle,
   InformationWrapper,
   Name,
-  Specifications,
   Description,
   ImageWrapper,
   Evolutions,
+  Statistics,
   Card,
+  Biography,
 } from './Style'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { getSinglePokemon } from '../../store/pokemons'
-import { getPokemonSpecies } from '../../store/pokemonSpecies'
+import { getPokemonSpecies, resetSpecies } from '../../store/pokemonSpecies'
+import {
+  getPokemonEvolutions,
+  resetEvolution,
+} from '../../store/pokemonEvolutions'
 
 const Details = ({ match }) => {
   const dispatch = useDispatch()
   const { listPokemons } = useSelector((state) => state.pokemons)
   const { data } = useSelector((state) => state.species)
+  const { evolutions } = useSelector((state) => state.evolutions)
   const { id } = match.params
   const selectedPokemon = listPokemons.find(
     (pokemon) => pokemon.id === Number(id),
   )
+  const evolutionChainId = data.evolution_chain
+    ? data.evolution_chain.url.split('/')[6]
+    : null
 
   useEffect(() => {
-    dispatch(getPokemonSpecies(id))
-    console.log(data)
+    if (!evolutionChainId) dispatch(getPokemonSpecies(id))
+
     if (!selectedPokemon) {
       dispatch(getSinglePokemon(id))
-      console.log('shit wasnt loaded before')
     }
+
     return () => {
-      console.log('cleaned')
+      dispatch(resetSpecies())
     }
   }, [])
 
+  useEffect(() => {
+    if (evolutionChainId) {
+      dispatch(getPokemonEvolutions(evolutionChainId))
+    }
+    return () => {
+      dispatch(resetEvolution())
+    }
+  }, [evolutionChainId])
+
   return (
     <>
-      {selectedPokemon ? (
-        <MainContainer>
+      {selectedPokemon && evolutions ? (
+        <MainContainer background='#912c36'>
           <InformationWrapper>
-            <Name>Charizard</Name>
-            <Specifications>
-              <p>capture rate: 5</p>
-              <p>Wight - 53.kg</p>
-              <p>Height - 2.5m</p>
-            </Specifications>
+            <Name>{selectedPokemon.name}</Name>
+            <Biography>
+              <Statistics>
+                <p>base experience - {selectedPokemon.base_experience}</p>
+                <p>Weight - {selectedPokemon.weight}kg</p>
+                <p>Height - {selectedPokemon.height}m</p>
+              </Statistics>
+              <Statistics>
+                {selectedPokemon.stats.map((stat) => (
+                  <p key={stat.stat.name}>
+                    {stat.stat.name} -<span> {stat.base_stat}</span>
+                  </p>
+                ))}
+              </Statistics>
+            </Biography>
             <Description>
               <h4>Bio</h4>
               <p>
@@ -55,29 +80,19 @@ const Details = ({ match }) => {
                 ability to stand on its hind legs.
               </p>
             </Description>
-            <Triangle />
-
-            <ImageWrapper>
-              <img
-                src='https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/006.png'
-                alt=''
-              />
-            </ImageWrapper>
-            <Evolutions>
-              <Card>
-                <img
-                  src='https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/004.png'
-                  alt=''
-                />
-              </Card>
-              <Card>
-                <img
-                  src='https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/005.png'
-                  alt=''
-                />
-              </Card>
-            </Evolutions>
           </InformationWrapper>
+          <ImageWrapper>
+            {/*  <Triangle /> */}
+            <img src={selectedPokemon.sprites.frontDefault} alt='' />
+            <Evolutions>
+              {evolutions.map((pokemon) => (
+                <Card key={pokemon.name}>
+                  <img src={pokemon.img} alt={pokemon.name} />
+                  <p>{pokemon.name}</p>
+                </Card>
+              ))}
+            </Evolutions>
+          </ImageWrapper>
         </MainContainer>
       ) : (
         <p> not working</p>
