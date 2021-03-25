@@ -11,11 +11,17 @@ const PokemonList = () => {
   const dispatch = useDispatch()
   const { cache, search } = useSelector((state) => state.cachedPokemons)
   const { listPokemons } = useSelector((state) => state.pokemons)
+
+  const loadPokemonList = () => {
+    dispatch(resetSearch())
+    dispatch(resetPokemons())
+  }
+
   useEffect(() => {
-    if (listPokemons.length < 6) {
+    if (!search.length && listPokemons.length < 6) {
       dispatch(loadPokemons(cache))
     }
-    if (search) {
+    if (search.length) {
       dispatch(resetPokemons())
       dispatch(loadPokemons(search))
     }
@@ -39,8 +45,20 @@ const PokemonList = () => {
             ))}
         </Cards>
       </Container>
-      <LoadBtn onClick={() => dispatch(loadPokemons(cache))}>
-        {!search.length ? 'Load More...' : 'Go back'}
+      {search.length && (
+        <LoadBtn onClick={() => loadPokemonList()}>Go back</LoadBtn>
+      )}
+      <LoadBtn
+        disabled={
+          search.length === listPokemons.length ||
+          listPokemons.length === cache.length
+        }
+        onClick={() =>
+          search.length && listPokemons !== search.length
+            ? dispatch(loadPokemons(search))
+            : dispatch(loadPokemons(cache))
+        }>
+        Load More...
       </LoadBtn>
     </>
   )

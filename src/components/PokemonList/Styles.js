@@ -19,4 +19,9 @@ export const LoadBtn = styled.button`
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+
+  &:disabled {
+    background: #a3a3a3;
+    cursor: auto;
+  }
 `

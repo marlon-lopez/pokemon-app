@@ -19,6 +19,7 @@ const Header = () => {
 
   const submitHandler = (name) => {
     dispatch(searchPokemonsByName(name))
+    setSearch('')
   }
   return (
     <NavBar>

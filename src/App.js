@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import { useLocation, Route, Switch } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { loadPokemons } from './store/pokemons'
 import { getCachedPokemons } from './store/cachedPokemons'
-import GlobalStyles from './GlobalStyles'
 
 import PokemonList from './components/PokemonList/PokemonList'
+import Details from './components/Details/Details'
+import Favorites from './components/Favorites/Favorites'
+import Header from './components/Header/Header'
 
 const App = () => {
+  const location = useLocation()
+  const background = location.state && location.state.background
   const dispatch = useDispatch()
   const cachedPokemons = useSelector((state) => state.cachedPokemons)
 
@@ -22,14 +25,14 @@ const App = () => {
       {cachedPokemons.cache.length === 0 ? (
         <h2>loading...</h2>
       ) : (
-        <Router>
-          <GlobalStyles />
-          <Switch>
-            <Route path='/'>
-              <PokemonList />
-            </Route>
+        <>
+          <Header />
+          <Switch location={background || location}>
+            <Route path='/' exact component={PokemonList} />
+            <Route path='/pokemons/:id' exact component={Details} />
           </Switch>
-        </Router>
+          {background && <Route path='/favorites' children={<Favorites />} />}
+        </>
       )}
     </>
   )

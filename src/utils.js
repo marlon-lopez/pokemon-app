@@ -5,3 +5,7 @@ export const formatPokemonId = (id) => {
 export const formatPokemonUrl = (param) => {
   return `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${param}.png`
 }
+
+export const getUrlId = (url) => {
+  console.log(url.split('/')[6])
+}
