@@ -26,3 +26,6 @@ export const getPokemonsByNameOrId = (param) => {
 export const getPokemonSpeciesById = (id) => {
   return createRequest(`/pokemon-species/${id}/`)
 }
+export const getPokemonEvolutionById = (id) => {
+  return createRequest(`/evolution-chain/${id}/`)
+}
