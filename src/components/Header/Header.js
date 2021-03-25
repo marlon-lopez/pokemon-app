@@ -6,6 +6,8 @@ import {
   PageLink,
   SearchBtn,
   SearchBox,
+  Bars,
+  NavMenu,
 } from './Styles'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -16,6 +18,17 @@ const Header = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const [search, setSearch] = useState('')
+  const [activeNav, setActiveNav] = useState(false)
+
+  const activeNavBar = () => {
+    console.log(activeNav)
+    if (!activeNav === true) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    setActiveNav(!activeNav)
+  }
 
   const submitHandler = (name) => {
     dispatch(searchPokemonsByName(name))
@@ -48,31 +61,38 @@ const Header = () => {
           fill='white'
         />
       </Icon>
-      <SearchBox>
-        <SerchBar
-          onChange={(e) => {
-            setSearch(e.currentTarget.value)
-          }}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              submitHandler(search)
-            }
-          }}
-          type='search'
-          value={search}
-          placeholder='Seach pokemon...'
-        />
-        <SearchBtn onClick={() => submitHandler(search)}>
-          <i className='fas fa-search'></i>
-        </SearchBtn>
-      </SearchBox>
-      <PageLink
-        to={{
-          pathname: '/favorites',
-          state: { background: location },
-        }}>
-        <i className='far fa-heart' title='favorite pokemons' />
-      </PageLink>
+      <Bars
+        onClick={() => activeNavBar(!activeNav)}
+        active={activeNav}
+        className='fas fa-bars'></Bars>
+      <NavMenu active={activeNav}>
+        <SearchBox>
+          <SerchBar
+            onChange={(e) => {
+              setSearch(e.currentTarget.value)
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                submitHandler(search)
+              }
+            }}
+            type='search'
+            value={search}
+            placeholder='Seach pokemon...'
+          />
+          <SearchBtn onClick={() => submitHandler(search)}>
+            <i className='fas fa-search'></i>
+          </SearchBtn>
+        </SearchBox>
+        <PageLink
+          to={{
+            pathname: '/favorites',
+            state: { background: location },
+          }}>
+          <i className='far fa-heart' title='favorite pokemons' />{' '}
+          {activeNav === true ? 'Favorite' : ''}
+        </PageLink>
+      </NavMenu>
     </NavBar>
   )
 }

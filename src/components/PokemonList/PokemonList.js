@@ -12,6 +12,7 @@ const PokemonList = () => {
   const { cache, search } = useSelector((state) => state.cachedPokemons)
   const { listPokemons } = useSelector((state) => state.pokemons)
 
+  //clean the search and listPokemons so it renders again and load pokemons
   const loadPokemonList = () => {
     dispatch(resetSearch())
     dispatch(resetPokemons())
@@ -21,13 +22,12 @@ const PokemonList = () => {
     if (!search.length && listPokemons.length < 6) {
       dispatch(loadPokemons(cache))
     }
+
     if (search.length) {
       dispatch(resetPokemons())
       dispatch(loadPokemons(search))
     }
-    return () => {
-      console.log('cleaned')
-    }
+    return () => {}
   }, [search])
   return (
     <>
@@ -45,19 +45,23 @@ const PokemonList = () => {
             ))}
         </Cards>
       </Container>
-      {search.length && (
+      {search.length ? (
         <LoadBtn onClick={() => loadPokemonList()}>Go back</LoadBtn>
+      ) : (
+        ''
       )}
+      {/* button is disable once it user reach all the pokemons */}
       <LoadBtn
         disabled={
           search.length === listPokemons.length ||
           listPokemons.length === cache.length
         }
-        onClick={() =>
-          search.length && listPokemons !== search.length
+        /* load search or cached pokemos  */
+        onClick={() => {
+          search.length && listPokemons.length !== search.length
             ? dispatch(loadPokemons(search))
             : dispatch(loadPokemons(cache))
-        }>
+        }}>
         Load More...
       </LoadBtn>
     </>
