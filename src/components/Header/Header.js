@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   NavBar,
   SerchBar,
@@ -8,10 +8,18 @@ import {
   SearchBox,
 } from './Styles'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { searchPokemonsByName } from '../../store/cachedPokemons'
 
 const Header = () => {
   const location = useLocation()
   const history = useHistory()
+  const dispatch = useDispatch()
+  const [search, setSearch] = useState('')
+
+  const submitHandler = (name) => {
+    dispatch(searchPokemonsByName(name))
+  }
   return (
     <NavBar>
       <Icon
@@ -40,9 +48,21 @@ const Header = () => {
         />
       </Icon>
       <SearchBox>
-        <SerchBar type='search' name='' id='' placeholder='Seach pokemon...' />
-        <SearchBtn>
-          <i class='fas fa-search'></i>
+        <SerchBar
+          onChange={(e) => {
+            setSearch(e.currentTarget.value)
+          }}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              submitHandler(search)
+            }
+          }}
+          type='search'
+          value={search}
+          placeholder='Seach pokemon...'
+        />
+        <SearchBtn onClick={() => submitHandler(search)}>
+          <i className='fas fa-search'></i>
         </SearchBtn>
       </SearchBox>
       <PageLink

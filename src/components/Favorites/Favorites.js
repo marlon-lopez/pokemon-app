@@ -3,15 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getFavoritePokemons } from '../../store/pokemons'
 import { Container, PokemonList, Item, CloseBtn } from './Style'
+
 const Favorites = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { pokemons } = useSelector((state) => state)
   const favorites = getFavoritePokemons(pokemons)
   useEffect(() => {
-    console.log('rendered')
+    document.body.style.overflow = 'hidden'
     return () => {
       console.log('dismounted')
+      document.body.style.overflowY = 'auto'
     }
   }, [])
   return (

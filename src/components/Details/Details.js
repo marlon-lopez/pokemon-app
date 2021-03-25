@@ -74,10 +74,11 @@ const Details = ({ match }) => {
           background={colors[selectedPokemon.types[0].type.name].primary}>
           <InformationWrapper>
             <FavBtn
-              isFavorite={favPokemons.includes(id)}
-              action={() => favAction(id)}
+              isFavorite={favPokemons.includes(Number(id))}
+              action={() => favAction(Number(id))}
             />
             <Name>{selectedPokemon.name}</Name>
+            <Name>{favPokemons.includes(Number(id))}</Name>
             <Biography>
               <Statistics>
                 <p>base experience - {selectedPokemon.base_experience}</p>

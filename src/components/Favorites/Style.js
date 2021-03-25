@@ -15,13 +15,14 @@ export const Container = styled.div`
 export const PokemonList = styled.div`
   position: relative;
   width: 70%;
-  min-height: 400px;
+  height: 70vh;
   background: white;
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   row-gap: 2rem;
   padding: 3rem 3rem;
+  overflow-y: auto;
 `
 export const Item = styled.div`
   display: flex;

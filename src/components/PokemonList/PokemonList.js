@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { loadPokemons } from '../../store/pokemons'
+import { loadPokemons, resetPokemons } from '../../store/pokemons'
+import { resetSearch } from '../../store/cachedPokemons'
 
 import { Container } from '../../GlobalStyles'
 import { Cards, LoadBtn } from './Styles'
@@ -8,14 +9,20 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const PokemonList = () => {
   const dispatch = useDispatch()
-  const { cache } = useSelector((state) => state.cachedPokemons)
+  const { cache, search } = useSelector((state) => state.cachedPokemons)
   const { listPokemons } = useSelector((state) => state.pokemons)
   useEffect(() => {
-    dispatch(loadPokemons(cache))
+    if (listPokemons.length < 6) {
+      dispatch(loadPokemons(cache))
+    }
+    if (search) {
+      dispatch(resetPokemons())
+      dispatch(loadPokemons(search))
+    }
     return () => {
       console.log('cleaned')
     }
-  }, [])
+  }, [search])
   return (
     <>
       <Container>
@@ -33,7 +40,7 @@ const PokemonList = () => {
         </Cards>
       </Container>
       <LoadBtn onClick={() => dispatch(loadPokemons(cache))}>
-        Load More...
+        {!search.length ? 'Load More...' : 'Go back'}
       </LoadBtn>
     </>
   )
