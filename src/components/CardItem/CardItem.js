@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import FavBtn from '../FavBtn/FavBtn'
@@ -17,6 +17,15 @@ import colors from '../../data/colors'
 import { favPokemonAdded, favPokemonRemoved } from '../../store/pokemons'
 
 const CardItem = ({ image, name, types, id }) => {
+  const [imgLoaded, setImgLoaded] = useState(false)
+  /*   useEffect(() => {
+    console.log('card mounted', name)
+    console.log(imgLoaded)
+    return () => {
+      console.log('card dismounted')
+    }
+  }, []) */
+
   const history = useHistory()
   const dispatch = useDispatch()
   const { favPokemons } = useSelector((state) => state.pokemons)
@@ -42,6 +51,7 @@ const CardItem = ({ image, name, types, id }) => {
         src={image}
         alt={name}
         onClick={() => history.push(`/pokemons/${id}`)}
+        whileHover={{ scale: 1.1 }}
       />
       <InfoTags>
         {types.map((type) => (

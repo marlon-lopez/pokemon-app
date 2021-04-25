@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+
 import {
   NavBar,
   SerchBar,
@@ -29,10 +31,16 @@ const Header = () => {
     }
     setActiveNav(!activeNav)
   }
+  useEffect(() => {
+    if (activeNav) {
+      activeNavBar(false)
+    }
+  }, [location])
 
   const submitHandler = (name) => {
-    dispatch(searchPokemonsByName(name))
+    history.push(`/search-results/${name}`)
     setSearch('')
+    if (activeNav) activeNavBar(false)
   }
   return (
     <NavBar>
@@ -66,7 +74,7 @@ const Header = () => {
         active={activeNav}
         className='fas fa-bars'></Bars>
       <NavMenu active={activeNav}>
-        <SearchBox>
+        <SearchBox initial={{ y: -250 }} animate={{ y: -10 }}>
           <SerchBar
             onChange={(e) => {
               setSearch(e.currentTarget.value)
@@ -89,7 +97,13 @@ const Header = () => {
             pathname: '/favorites',
             state: { background: location },
           }}>
-          <i className='far fa-heart' title='favorite pokemons' />{' '}
+          <motion.i
+            initial={{ scale: 2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1, type: 'spring', stiffness: 700 }}
+            className='far fa-heart'
+            title='favorite pokemons'
+          />{' '}
           {activeNav === true ? 'Favorite' : ''}
         </PageLink>
       </NavMenu>

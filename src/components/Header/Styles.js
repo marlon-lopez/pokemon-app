@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 export const NavBar = styled.nav`
   background: linear-gradient(to right, #fc5862, #fa5887);
@@ -9,12 +10,12 @@ export const NavBar = styled.nav`
   justify-content: space-between;
   align-items: center;
 `
-export const SearchBox = styled.div`
+export const SearchBox = styled(motion.div)`
   display: flex;
   margin: auto;
   @media screen and (max-width: 768px) {
-    margin: 0 0 8rem 0;
     width: 100%;
+    margin: 0 0 8rem 0;
     padding: 0 2rem;
   }
 `
@@ -31,7 +32,7 @@ export const SerchBar = styled.input`
   border: none;
   width: 400px;
   font-size: 1rem;
-  color: #a9a9a9;
+  color: #919191;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
   outline: none;
@@ -39,7 +40,7 @@ export const SerchBar = styled.input`
   @media screen and (max-width: 768px) {
   }
 `
-export const Icon = styled.svg`
+export const Icon = styled(motion.svg)`
   width: 2.5rem;
   cursor: pointer;
 `
@@ -75,11 +76,11 @@ export const NavMenu = styled.div`
     top: 0;
     right: 0;
     background: black;
+    padding: 6rem 0 0 0;
     width: 100%;
     height: 100%;
     flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 10rem;
+    //justify-content: flex-start;
     align-items: center;
     transform: translateX(${({ active }) => (!active ? '100%' : '0%')});
     //display: none;

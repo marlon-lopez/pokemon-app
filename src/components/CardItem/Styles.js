@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-export const Card = styled.div`
+export const Card = styled(motion.div)`
   width: 100%;
   height: 300px;
   position: relative;
@@ -30,7 +31,7 @@ export const LeftTriangle = styled.svg`
   width: 200px;
 `
 
-export const Image = styled.img`
+export const Image = styled(motion.img)`
   cursor: pointer;
   width: 170px;
   z-index: 10;

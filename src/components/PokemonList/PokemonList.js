@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { loadPokemons, resetPokemons } from '../../store/pokemons'
+import { loadPokemons, pokemonsReceived } from '../../store/pokemons'
 import { resetSearch } from '../../store/cachedPokemons'
 
 import { Container } from '../../GlobalStyles'
 import { Cards, LoadBtn } from './Styles'
 import CardItem from '../CardItem/CardItem'
 import { useDispatch, useSelector } from 'react-redux'
+import { motion } from 'framer-motion'
 
 const PokemonList = () => {
   const dispatch = useDispatch()
@@ -13,22 +14,13 @@ const PokemonList = () => {
   const { listPokemons } = useSelector((state) => state.pokemons)
 
   //clean the search and listPokemons so it renders again and load pokemons
-  const loadPokemonList = () => {
-    dispatch(resetSearch())
-    dispatch(resetPokemons())
-  }
 
   useEffect(() => {
-    if (!search.length && listPokemons.length < 6) {
-      dispatch(loadPokemons(cache))
-    }
-
-    if (search.length) {
-      dispatch(resetPokemons())
-      dispatch(loadPokemons(search))
+    if (listPokemons.length < 6) {
+      dispatch(loadPokemons(cache, pokemonsReceived, false))
     }
     return () => {}
-  }, [search])
+  }, [])
   return (
     <>
       <Container>
@@ -45,22 +37,13 @@ const PokemonList = () => {
             ))}
         </Cards>
       </Container>
-      {search.length ? (
-        <LoadBtn onClick={() => loadPokemonList()}>Go back</LoadBtn>
-      ) : (
-        ''
-      )}
-      {/* button is disable once it user reach all the pokemons */}
+
+      {/* button is disable once the user reach last pokemon */}
       <LoadBtn
-        disabled={
-          search.length === listPokemons.length ||
-          listPokemons.length === cache.length
-        }
-        /* load search or cached pokemos  */
+        disabled={listPokemons.length === cache.length}
+        //load more pokemons
         onClick={() => {
-          search.length && listPokemons.length !== search.length
-            ? dispatch(loadPokemons(search))
-            : dispatch(loadPokemons(cache))
+          dispatch(loadPokemons(cache, pokemonsReceived, false))
         }}>
         Load More...
       </LoadBtn>
