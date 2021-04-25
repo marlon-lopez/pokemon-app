@@ -18,6 +18,7 @@ const slice = createSlice({
     },
     searchedPokemons(state, action) {
       state.search = action.payload
+      console.log(state.search)
     },
     resetSearch(state) {
       state.search = []
