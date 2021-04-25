@@ -7,13 +7,14 @@ import PokemonList from './components/PokemonList/PokemonList'
 import Details from './components/Details/Details'
 import Favorites from './components/Favorites/Favorites'
 import Header from './components/Header/Header'
+import SearchResults from './components/SearchResults/SearchResults'
 
 const App = () => {
   const location = useLocation()
   const background = location.state && location.state.background
   const dispatch = useDispatch()
   const cachedPokemons = useSelector((state) => state.cachedPokemons)
-
+  const { loading } = useSelector((state) => state.pokemons)
   useEffect(() => {
     if (!cachedPokemons.cache.length) dispatch(getCachedPokemons())
     return () => {
@@ -22,17 +23,22 @@ const App = () => {
   }, [])
   return (
     <>
-      {cachedPokemons.cache.length === 0 ? (
-        <h2>loading...</h2>
-      ) : (
+      {cachedPokemons.cache.length ? (
         <>
           <Header />
           <Switch location={background || location}>
             <Route path='/' exact component={PokemonList} />
             <Route path='/pokemons/:id' exact component={Details} />
+            <Route
+              path='/search-results/:search'
+              exact
+              component={SearchResults}
+            />
           </Switch>
           {background && <Route path='/favorites' children={<Favorites />} />}
         </>
+      ) : (
+        ''
       )}
     </>
   )
