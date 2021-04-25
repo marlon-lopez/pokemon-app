@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getPokemonsByNameOrId, getPokemonSpecies } from './api/api'
-import { formatPokemonId, formatPokemonUrl } from '../utils'
+import { formatPokemonId, formatPokemonUrl, formatPokemonObj } from '../utils'
 
 const slice = createSlice({
   name: 'pokemons',
   initialState: {
     listPokemons: [],
     favPokemons: [],
-    capturedPokemons: [],
+    searchResults: [],
     loading: false,
   },
 
@@ -40,6 +40,13 @@ const slice = createSlice({
     resetPokemons(state, action) {
       state.listPokemons = []
     },
+    resetSearchResults(state, action) {
+      state.searchResults = []
+    },
+    searchResultsReceived(state, action) {
+      const { pokemon } = action.payload
+      state.searchResults.push(pokemon)
+    },
   },
 })
 
@@ -50,51 +57,47 @@ export const {
   singlePokemonReceived,
   favPokemonAdded,
   favPokemonRemoved,
+  searchResultsReceived,
+  resetSearchResults,
 } = slice.actions
 
-export const loadPokemons = (cachedPokemons) => async (dispatch, getState) => {
-  let size = getState().pokemons.listPokemons.length
+export const loadPokemons = (cachedPokemons, action, search) => async (
+  dispatch,
+  getState,
+) => {
+  let size = search
+    ? getState().pokemons.searchResults.length
+    : getState().pokemons.listPokemons.length
 
   //if a pokemon is already in the array delete it and set the size to 0
   if (size > 0 && size < 5) {
     dispatch(resetPokemons())
     size--
   }
+  //get the next 6 pokemons
   const results = cachedPokemons.slice(size, size + 6)
 
+  //set the loading status to true because it will be loading pokemon details
+  dispatch(toggleLoading())
+  //change every pokemon's image for one with a better quality
   for (const [index, { url }] of results.entries()) {
     const id = Number(url.split('/')[6])
     const pokemon = await getPokemonsByNameOrId(id)
     const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
 
-    dispatch(
-      pokemonsReceived({
-        pokemon: {
-          ...pokemon,
-          sprites: {
-            frontDefault: pokemonImageUrl,
-          },
-        },
-        index,
-      }),
-    )
+    dispatch(action(formatPokemonObj(pokemon, pokemonImageUrl, index)))
   }
+  dispatch(toggleLoading())
 }
 
 export const getSinglePokemon = (id) => async (dispatch, getState) => {
+  console.log('from single pokemon')
   const pokemon = await getPokemonsByNameOrId(id)
   const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
   dispatch(toggleLoading())
 
   dispatch(
-    singlePokemonReceived({
-      pokemon: {
-        ...pokemon,
-        sprites: {
-          frontDefault: pokemonImageUrl,
-        },
-      },
-    }),
+    singlePokemonReceived(formatPokemonObj(pokemon, pokemonImageUrl, id)),
   )
 }
 
