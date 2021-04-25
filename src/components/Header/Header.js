@@ -32,15 +32,15 @@ const Header = () => {
     setActiveNav(!activeNav)
   }
   useEffect(() => {
-    if (activeNav) {
+    /* if (activeNav) {
       activeNavBar(false)
-    }
+    } */
   }, [location])
 
   const submitHandler = (name) => {
     history.push(`/search-results/${name}`)
     setSearch('')
-    if (activeNav) activeNavBar(false)
+    // if (activeNav) activeNavBar(false)
   }
   return (
     <NavBar>

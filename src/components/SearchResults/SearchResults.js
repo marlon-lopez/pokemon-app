@@ -21,17 +21,19 @@ const SearchResults = () => {
   const searchName = location.pathname.split('/')[2]
 
   useEffect(() => {
-    dispatch(resetSearch())
-    dispatch(resetSearchResults())
+    console.log('search', searchName)
     dispatch(searchPokemonsByName(searchName))
+    /* console.log('reset search')
+    dispatch(resetSearch())
+    dispatch(resetSearchResults()) */
     return () => {
+      console.log('reset search ')
       dispatch(resetSearch())
       dispatch(resetSearchResults())
     }
   }, [location.pathname])
 
   useEffect(() => {
-    console.log('results rendered')
     if (search.length) {
       console.log('save in search results')
       dispatch(loadPokemons(search, searchResultsReceived, true))
@@ -59,7 +61,7 @@ const SearchResults = () => {
 
       {/* button is disable once it user reach all the pokemons */}
       <LoadBtn
-        disabled={searchResults.length === cache.length}
+        disabled={searchResults.length === search.length}
         /* load search or cached pokemos  */
         onClick={() => {
           dispatch(loadPokemons(search, searchResultsReceived, true))
