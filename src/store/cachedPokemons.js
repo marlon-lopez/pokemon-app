@@ -43,7 +43,13 @@ export const getCachedPokemons = () => async (dispatch, getState) => {
 
 export const searchPokemonsByName = (name) => (dispatch, getState) => {
   const { cache } = getState().cachedPokemons
+  console.log('cache', cache)
+  console.log(
+    'cache filtered',
+    cache.filter((poke) => poke.name.includes(name)),
+  )
   const result = cache.filter((pokemon) => pokemon.name.includes(name))
+
   console.log('search in cache', result)
   dispatch(searchedPokemons(result))
 }
