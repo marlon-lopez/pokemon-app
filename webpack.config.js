@@ -67,7 +67,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
     new WebpackCopyPlugin({
-      patterns: [{ from: path.resolve(__dirname, '/public/_redirects') }],
+      patterns: [{ from: path.resolve(__dirname, 'public/_redirects') }],
     }),
   ],
 
