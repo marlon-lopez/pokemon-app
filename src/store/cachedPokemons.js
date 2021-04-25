@@ -17,6 +17,7 @@ const slice = createSlice({
       slice.caseReducers.toggleLoading(state)
     },
     searchedPokemons(state, action) {
+      console.log('payload ', action.payload)
       state.search = action.payload
       console.log(state.search)
     },
@@ -43,6 +44,7 @@ export const getCachedPokemons = () => async (dispatch, getState) => {
 export const searchPokemonsByName = (name) => (dispatch, getState) => {
   const { cache } = getState().cachedPokemons
   const result = cache.filter((pokemon) => pokemon.name.includes(name))
+  console.log('search in cache', result)
   dispatch(searchedPokemons(result))
 }
 
