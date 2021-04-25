@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const WebpackCopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const path = require('path')
@@ -65,6 +66,9 @@ module.exports = {
       template: './public/index.html',
     }),
     new MiniCssExtractPlugin(),
+    new WebpackCopyPlugin({
+      patterns: [{ from: path.resolve(__dirname, 'public/_redirects') }],
+    }),
   ],
 
   devtool: 'source-map',
