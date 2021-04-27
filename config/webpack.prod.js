@@ -11,6 +11,9 @@ const prodConfig = {
     }),
   ],
   devtool: 'source-map',
+  output: {
+    publicPath: '/',
+  },
   optimization: {
     splitChunks: {
       chunks: 'all',

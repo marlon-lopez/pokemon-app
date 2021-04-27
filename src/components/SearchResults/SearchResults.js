@@ -10,24 +10,23 @@ import {
 } from '../../store/pokemons'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory } from 'react-router'
 
 const SearchResults = ({ match }) => {
   const dispatch = useDispatch()
-  const location = useLocation()
   const history = useHistory()
   const { search } = useSelector((state) => state.cachedPokemons)
   const { searchResults } = useSelector((state) => state.pokemons)
-  const searchName = match.params.search
+  const searchName = match.params.search.toLowerCase()
 
   useEffect(() => {
     console.log('search', searchName)
     dispatch(searchPokemonsByName(searchName))
-    /* return () => {
+    return () => {
       console.log('reset search ')
       dispatch(resetSearch())
       dispatch(resetSearchResults())
-    } */
+    }
   }, [searchName])
 
   useEffect(() => {
