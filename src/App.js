@@ -16,9 +16,7 @@ const App = () => {
   const cachedPokemons = useSelector((state) => state.cachedPokemons)
   useEffect(() => {
     if (!cachedPokemons.cache.length) dispatch(getCachedPokemons())
-    return () => {
-      console.log('re-rendered')
-    }
+    return () => {}
   }, [])
   return (
     <>

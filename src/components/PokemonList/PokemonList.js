@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { loadPokemons, pokemonsReceived } from '../../store/pokemons'
-import { resetSearch } from '../../store/cachedPokemons'
 
 import { Container } from '../../GlobalStyles'
 import { Cards, LoadBtn } from './Styles'
 import CardItem from '../CardItem/CardItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { motion } from 'framer-motion'
 
 const PokemonList = () => {
   const dispatch = useDispatch()
-  const { cache, search } = useSelector((state) => state.cachedPokemons)
+  const { cache } = useSelector((state) => state.cachedPokemons)
   const { listPokemons } = useSelector((state) => state.pokemons)
 
   //clean the search and listPokemons so it renders again and load pokemons
@@ -21,6 +19,7 @@ const PokemonList = () => {
     }
     return () => {}
   }, [])
+
   return (
     <>
       <Container>

@@ -15,23 +15,20 @@ import {
 } from './Styles'
 import colors from '../../data/colors'
 import { favPokemonAdded, favPokemonRemoved } from '../../store/pokemons'
+import { childVariant } from '../../Animations'
+import { useInView } from 'react-intersection-observer'
 
 const CardItem = ({ image, name, types, id }) => {
-  const [imgLoaded, setImgLoaded] = useState(false)
-  /*   useEffect(() => {
-    console.log('card mounted', name)
-    console.log(imgLoaded)
-    return () => {
-      console.log('card dismounted')
-    }
-  }, []) */
-
   const history = useHistory()
   const dispatch = useDispatch()
   const { favPokemons } = useSelector((state) => state.pokemons)
 
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  })
+
   const favAction = (id) => {
-    console.log('clickedd')
     if (favPokemons)
       return !favPokemons.includes(id)
         ? dispatch(favPokemonAdded(id))
@@ -39,7 +36,12 @@ const CardItem = ({ image, name, types, id }) => {
   }
 
   return (
-    <Card bgColor={colors[types[0].type.name].primary}>
+    <Card
+      ref={ref}
+      variants={childVariant}
+      initial='hidden'
+      animate={inView ? 'visible' : 'hidden'}
+      bgColor={colors[types[0].type.name].primary}>
       <Actions>
         <Name>{name}</Name>
         <FavBtn

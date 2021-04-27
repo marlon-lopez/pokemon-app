@@ -20,10 +20,8 @@ const SearchResults = ({ match }) => {
   const searchName = match.params.search.toLowerCase()
 
   useEffect(() => {
-    console.log('search', searchName)
     dispatch(searchPokemonsByName(searchName))
     return () => {
-      console.log('reset search ')
       dispatch(resetSearch())
       dispatch(resetSearchResults())
     }
@@ -31,7 +29,6 @@ const SearchResults = ({ match }) => {
 
   useEffect(() => {
     if (search.length) {
-      console.log('save in search results')
       dispatch(loadPokemons(search, searchResultsReceived, true))
     }
   }, [search])

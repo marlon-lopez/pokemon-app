@@ -12,18 +12,14 @@ import {
   NavMenu,
 } from './Styles'
 import { useHistory, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { searchPokemonsByName } from '../../store/cachedPokemons'
 
 const Header = () => {
   const location = useLocation()
   const history = useHistory()
-  const dispatch = useDispatch()
   const [search, setSearch] = useState('')
   const [activeNav, setActiveNav] = useState(false)
 
   const activeNavBar = () => {
-    console.log(activeNav)
     if (!activeNav === true) {
       document.body.style.overflow = 'hidden'
     } else {
@@ -32,9 +28,9 @@ const Header = () => {
     setActiveNav(!activeNav)
   }
   useEffect(() => {
-    /* if (activeNav) {
+    if (activeNav) {
       activeNavBar(false)
-    } */
+    }
   }, [location])
 
   const submitHandler = (name) => {

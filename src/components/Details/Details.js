@@ -40,7 +40,6 @@ const Details = ({ match }) => {
     : null
 
   const favAction = (id) => {
-    console.log('clickedd')
     if (favPokemons)
       return !favPokemons.includes(id)
         ? dispatch(favPokemonAdded(id))
@@ -119,9 +118,7 @@ const Details = ({ match }) => {
             </Evolutions>
           </ImageWrapper>
         </MainContainer>
-      ) : (
-        <p> not working</p>
-      )}
+      ) : null}
     </>
   )
 }

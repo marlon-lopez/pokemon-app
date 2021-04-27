@@ -91,7 +91,6 @@ export const loadPokemons = (cachedPokemons, action, search) => async (
 }
 
 export const getSinglePokemon = (id) => async (dispatch, getState) => {
-  console.log('from single pokemon')
   const pokemon = await getPokemonsByNameOrId(id)
   const pokemonImageUrl = formatPokemonUrl(formatPokemonId(id))
   dispatch(toggleLoading())

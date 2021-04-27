@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-export const Container = styled.div`
+export const Container = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +13,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 `
-export const PokemonList = styled.div`
+export const PokemonList = styled(motion.div)`
   position: relative;
   width: 70%;
   height: 70vh;

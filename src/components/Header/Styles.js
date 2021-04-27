@@ -43,6 +43,7 @@ export const SerchBar = styled.input`
 export const Icon = styled(motion.svg)`
   width: 2.5rem;
   cursor: pointer;
+  transform-origin: 50%;
 `
 export const PageLink = styled(Link)`
   color: white;
