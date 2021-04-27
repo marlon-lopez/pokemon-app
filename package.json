@@ -5,9 +5,10 @@
   "main": "index.js",
   "homepage": "http://marlon-lopez.github.io/pokemon-app",
   "scripts": {
-    "start": "webpack serve",
-    "build": "SET NODE_ENV=production & webpack",
-    "predeploy":"npm run build",
+    "start": "webpack serve --config config/webpack.dev.js",
+    "build": "webpack --config config/webpack.prod.js",
+    "analyze": "webpack-bundle-analyzer 'dist/static/js/*.js'",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "keywords": [],
@@ -28,9 +29,11 @@
     "postcss": "^8.2.7",
     "postcss-loader": "^5.1.0",
     "postcss-preset-env": "^6.7.0",
+    "react-refresh": "^0.10.0",
     "webpack": "^5.23.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
@@ -45,5 +48,6 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "styled-components": "^5.2.1"
-  }
+  },
+  "browserslist": "> 0.25%, not dead, not ie 11"
 }

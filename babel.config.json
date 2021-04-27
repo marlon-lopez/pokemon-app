@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "debug":true,"useBuiltIns": "usage", "corejs": 3.9 }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ]
+}

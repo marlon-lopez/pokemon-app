@@ -14,7 +14,6 @@ const App = () => {
   const background = location.state && location.state.background
   const dispatch = useDispatch()
   const cachedPokemons = useSelector((state) => state.cachedPokemons)
-  const { loading } = useSelector((state) => state.pokemons)
   useEffect(() => {
     if (!cachedPokemons.cache.length) dispatch(getCachedPokemons())
     return () => {

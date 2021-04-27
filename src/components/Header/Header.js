@@ -40,7 +40,7 @@ const Header = () => {
   const submitHandler = (name) => {
     history.push(`/search-results/${name}`)
     setSearch('')
-    // if (activeNav) activeNavBar(false)
+    if (activeNav) activeNavBar(false)
   }
   return (
     <NavBar>

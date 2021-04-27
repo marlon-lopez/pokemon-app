@@ -12,26 +12,23 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
 
-const SearchResults = () => {
+const SearchResults = ({ match }) => {
   const dispatch = useDispatch()
   const location = useLocation()
   const history = useHistory()
-  const { cache, search } = useSelector((state) => state.cachedPokemons)
+  const { search } = useSelector((state) => state.cachedPokemons)
   const { searchResults } = useSelector((state) => state.pokemons)
-  const searchName = location.pathname.split('/')[2]
+  const searchName = match.params.search
 
   useEffect(() => {
     console.log('search', searchName)
     dispatch(searchPokemonsByName(searchName))
-    /* console.log('reset search')
-    dispatch(resetSearch())
-    dispatch(resetSearchResults()) */
-    return () => {
+    /* return () => {
       console.log('reset search ')
       dispatch(resetSearch())
       dispatch(resetSearchResults())
-    }
-  }, [location.pathname])
+    } */
+  }, [searchName])
 
   useEffect(() => {
     if (search.length) {
