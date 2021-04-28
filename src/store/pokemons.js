@@ -100,13 +100,12 @@ export const getSinglePokemon = (id) => async (dispatch, getState) => {
   )
 }
 
-export const getFavoritePokemons = (state) => {
+export const getFavoritePokemons = (cache, favPokemons) => {
   const result = []
-  state.favPokemons.forEach((id) => {
-    const pokemonObj = state.listPokemons.find((pokemon) => pokemon.id == id)
-    if (pokemonObj) {
-      result.push(pokemonObj)
-    }
+  favPokemons.forEach((id) => {
+    let pokemonObj = { ...cache[id - 1] }
+    pokemonObj.url = formatPokemonUrl(formatPokemonId(id))
+    result.push(pokemonObj)
   })
   return result
 }

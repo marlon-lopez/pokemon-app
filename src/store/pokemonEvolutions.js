@@ -25,11 +25,16 @@ export const getPokemonEvolutions = (id) => async (dispatch, getState) => {
   //save the evolutions
   let data = [
     response.chain.species ? response.chain.species : {},
-    response.chain.evolves_to[0] ? response.chain.evolves_to[0].species : {},
-    response.chain.evolves_to[0].evolves_to[0]
+
+    response.chain && response.chain.evolves_to[0]
+      ? response.chain.evolves_to[0].species
+      : {},
+
+    response.chain.evolves_to[0] && response.chain.evolves_to[0].evolves_to[0]
       ? response.chain.evolves_to[0].evolves_to[0].species
       : {},
   ]
+
   //change every evolution´s image for one with a better quality
   for (const [index, { name, url }] of data.entries()) {
     if (url) {

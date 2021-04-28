@@ -55,7 +55,6 @@ const SearchResults = ({ match }) => {
       {/* button is disable once it user reach all the pokemons */}
       <LoadBtn
         disabled={searchResults.length === search.length}
-        /* load search or cached pokemos  */
         onClick={() => {
           dispatch(loadPokemons(search, searchResultsReceived, true))
         }}>
